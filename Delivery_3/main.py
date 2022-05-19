@@ -88,57 +88,57 @@ for fast_text in fast_texts:
                  epochs=10,
                  verbose=2)
 
-# def make_model_lstm():
-#     model_lstm = Sequential()
-#     model_lstm.add(InputLayer((MAX_LEN,)))
-#     model_lstm.add(Embedding(input_dim=MAX_ID+1, output_dim=300, weights=[weights], trainable=True))
-#     model_lstm.add(SpatialDropout1D(0.5))
-#     model_lstm.add(Bidirectional(LSTM(300, return_sequences=True)))
-#     model_lstm.add(BatchNormalization())
-#     model_lstm.add(SpatialDropout1D(0.5))
-#     model_lstm.add(Bidirectional(LSTM(300)))
-#     model_lstm.add(BatchNormalization())
-#     model_lstm.add(Dropout(0.5))
-#     model_lstm.add(Dense(32,activation='softmax'))
-#     return model_lstm
-#
-# model_lstms = [make_model_lstm() for i in range(1)]
-# model_lstms[0].summary()
-#
-# for model_lstm in model_lstms:
-#     X_seq_train, X_seq_valid, y_train, y_valid = train_test_split(X_seq, y, test_size=0.2)
-#     model_lstm.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
-#     model_lstm.fit(X_seq_train, y_train, validation_data=(X_seq_valid, y_valid),
-#                  callbacks=[EarlyStopping(monitor='val_loss', patience=1, verbose=0)],
-#                  epochs=1,
-#                  verbose=2)
+def make_model_lstm():
+    model_lstm = Sequential()
+    model_lstm.add(InputLayer((MAX_LEN,)))
+    model_lstm.add(Embedding(input_dim=MAX_ID+1, output_dim=300, weights=[weights], trainable=True))
+    model_lstm.add(SpatialDropout1D(0.5))
+    model_lstm.add(Bidirectional(LSTM(300, return_sequences=True)))
+    model_lstm.add(BatchNormalization())
+    model_lstm.add(SpatialDropout1D(0.5))
+    model_lstm.add(Bidirectional(LSTM(300)))
+    model_lstm.add(BatchNormalization())
+    model_lstm.add(Dropout(0.5))
+    model_lstm.add(Dense(32,activation='softmax'))
+    return model_lstm
 
-# def make_model_cnn():
-#     inputs = Input((MAX_LEN,))
-#     x = Embedding(input_dim=MAX_ID+1, output_dim=300, weights=[weights], trainable=True)(inputs)
-#     x = SpatialDropout1D(0.5)(x)
-#     x = Conv1D(300, kernel_size=5,activation='relu')(x)
-#     x = BatchNormalization()(x)
-#     x = SpatialDropout1D(0.5)(x)
-#     x = MaxPooling1D(pool_size=2, strides=2)(x)
-#     x = Conv1D(300, kernel_size=5,activation='relu')(x)
-#     x = GlobalMaxPooling1D()(x)
-#     x = BatchNormalization()(x)
-#     x = Dropout(0.5)(x)
-#     outputs = Dense(32,activation='softmax')(x)
-#     model_cnn = Model(inputs, outputs)
-#     return model_cnn
-#
-# model_cnns = [make_model_cnn() for i in range(3)]
-# model_cnns[0].summary()
-#
-# for model_cnn in model_cnns:
-#     X_seq_train, X_seq_valid, y_train, y_valid = train_test_split(X_seq, y, test_size=0.1)
-#     model_cnn.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
-#     model_cnn.fit(X_seq_train, y_train, validation_data=(X_seq_valid, y_valid),
-#                  callbacks=[EarlyStopping(monitor='val_loss', patience=2, verbose=0)],
-#                  epochs=5,
-#                  verbose=2)
+model_lstms = [make_model_lstm() for i in range(3)]
+model_lstms[0].summary()
+
+for model_lstm in model_lstms:
+    X_seq_train, X_seq_valid, y_train, y_valid = train_test_split(X_seq, y, test_size=0.2)
+    model_lstm.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
+    model_lstm.fit(X_seq_train, y_train, validation_data=(X_seq_valid, y_valid),
+                 callbacks=[EarlyStopping(monitor='val_loss', patience=1, verbose=0)],
+                 epochs=5,
+                 verbose=2)
+
+def make_model_cnn():
+    inputs = Input((MAX_LEN,))
+    x = Embedding(input_dim=MAX_ID+1, output_dim=300, weights=[weights], trainable=True)(inputs)
+    x = SpatialDropout1D(0.5)(x)
+    x = Conv1D(300, kernel_size=5,activation='relu')(x)
+    x = BatchNormalization()(x)
+    x = SpatialDropout1D(0.5)(x)
+    x = MaxPooling1D(pool_size=2, strides=2)(x)
+    x = Conv1D(300, kernel_size=5,activation='relu')(x)
+    x = GlobalMaxPooling1D()(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.5)(x)
+    outputs = Dense(32,activation='softmax')(x)
+    model_cnn = Model(inputs, outputs)
+    return model_cnn
+
+model_cnns = [make_model_cnn() for i in range(3)]
+model_cnns[0].summary()
+
+for model_cnn in model_cnns:
+    X_seq_train, X_seq_valid, y_train, y_valid = train_test_split(X_seq, y, test_size=0.1)
+    model_cnn.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
+    model_cnn.fit(X_seq_train, y_train, validation_data=(X_seq_valid, y_valid),
+                 callbacks=[EarlyStopping(monitor='val_loss', patience=2, verbose=0)],
+                 epochs=5,
+                 verbose=2)
 
 def make_model_bagged(models):
     inputs = Input((MAX_LEN,))
