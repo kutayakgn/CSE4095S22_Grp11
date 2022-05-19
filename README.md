@@ -11,5 +11,3 @@ Group Members:
 3- 150118065 Şeref Kutay Akgün
 
 4- 150114058 Oğuzhan Erkol
-
-5- 150118501 Engin Bektaş
